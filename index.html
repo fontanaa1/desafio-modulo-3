@@ -1,0 +1,608 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Oráculo Solar — A Armadura de Ouro</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700;900&family=Cinzel:wght@400;600;700&family=Crimson+Text:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #c9a227;
+  --gold-light: #f0d060;
+  --gold-dim: #7a6010;
+  --gold-glow: rgba(201,162,39,0.5);
+  --crimson: #8b1a1a;
+  --deep: #03020a;
+  --void: #060412;
+  --cosmos: #0a0720;
+  --star: #e8e0ff;
+  --silver: #b8c4d8;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--void);
+  color: var(--star);
+  font-family: 'Crimson Text', Georgia, serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* ── Starfield ── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background:
+    radial-gradient(1px 1px at 8% 12%, rgba(255,255,255,.9) 0%, transparent 100%),
+    radial-gradient(1px 1px at 22% 38%, rgba(255,255,255,.7) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 37% 7%, rgba(255,255,255,.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 53% 28%, rgba(255,255,255,.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 68% 18%, rgba(255,255,255,.9) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 79% 53%, rgba(255,255,255,.7) 0%, transparent 100%),
+    radial-gradient(1px 1px at 91% 9%,  rgba(255,255,255,.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 14% 68%, rgba(255,255,255,.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 33% 83%, rgba(255,255,255,.7) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 58% 73%, rgba(255,255,255,.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 84% 88%, rgba(255,255,255,.8) 0%, transparent 100%),
+    radial-gradient(1px 1px at 4%  94%, rgba(255,255,255,.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 48% 58%, rgba(200,180,255,.5) 0%, transparent 100%),
+    radial-gradient(2px 2px at 93% 43%, rgba(255,240,180,.6) 0%, transparent 100%),
+    radial-gradient(1px 1px at 44% 93%, rgba(255,255,255,.4) 0%, transparent 100%),
+    radial-gradient(1px 1px at 72% 62%, rgba(255,255,255,.5) 0%, transparent 100%),
+    radial-gradient(1px 1px at 17% 47%, rgba(255,255,255,.4) 0%, transparent 100%),
+    radial-gradient(1.5px 1.5px at 61% 35%, rgba(255,230,150,.4) 0%, transparent 100%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* ── Hero ── */
+.hero {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 5rem 2rem 3rem;
+  overflow: hidden;
+}
+
+.hero-bg-glow {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 30%, rgba(201,162,39,.08) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.zodiac-ring {
+  position: absolute;
+  width: min(600px, 85vw);
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: .06;
+  animation: spin 120s linear infinite;
+  pointer-events: none;
+}
+@keyframes spin { to { transform: translate(-50%,-50%) rotate(360deg); } }
+
+.hero-eyebrow {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(.7rem,1.5vw,.85rem);
+  letter-spacing: .4em;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 1.2rem;
+  opacity: 0;
+  animation: fadeUp .8s .2s forwards;
+}
+
+.hero-title {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: clamp(2rem, 5.5vw, 4.5rem);
+  font-weight: 900;
+  line-height: 1.1;
+  background: linear-gradient(135deg, var(--gold-light) 0%, var(--gold) 45%, #e8a010 70%, var(--gold-light) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  filter: drop-shadow(0 0 40px rgba(201,162,39,.4));
+  margin-bottom: .8rem;
+  opacity: 0;
+  animation: fadeUp .8s .4s forwards;
+}
+
+.hero-sub {
+  font-family: 'Cinzel', serif;
+  font-size: clamp(.9rem, 2vw, 1.3rem);
+  color: var(--silver);
+  letter-spacing: .15em;
+  margin-bottom: 2rem;
+  opacity: 0;
+  animation: fadeUp .8s .6s forwards;
+}
+
+.hero-divider {
+  width: 180px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 2rem;
+  opacity: 0;
+  animation: fadeUp .8s .7s forwards;
+}
+
+.hero-desc {
+  max-width: 520px;
+  margin: 0 auto;
+  font-size: clamp(.95rem, 1.8vw, 1.1rem);
+  color: var(--silver);
+  line-height: 1.8;
+  opacity: 0;
+  animation: fadeUp .8s .8s forwards;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ── Oracle Section ── */
+.oracle-section {
+  position: relative;
+  z-index: 1;
+  padding: 3rem 2rem 6rem;
+}
+
+.section-label {
+  font-family: 'Cinzel', serif;
+  font-size: .75rem;
+  letter-spacing: .4em;
+  color: var(--gold-dim);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: .8rem;
+}
+
+.section-title {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: clamp(1.5rem, 3vw, 2.5rem);
+  color: var(--gold);
+  text-align: center;
+  margin-bottom: .5rem;
+  filter: drop-shadow(0 0 20px rgba(201,162,39,.3));
+}
+
+.section-divider {
+  width: 110px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 3rem;
+}
+
+.oracle-card {
+  max-width: 680px;
+  margin: 0 auto;
+  background: rgba(10,7,32,.9);
+  border: 1px solid rgba(201,162,39,.28);
+  border-radius: 2px;
+  padding: 3rem 2.5rem;
+  text-align: center;
+  box-shadow: 0 0 100px rgba(0,0,0,.6), inset 0 0 40px rgba(0,0,0,.5);
+  position: relative;
+}
+
+.oracle-card::before { content:'✦'; position:absolute; top:1rem; left:1.5rem; font-size:1.1rem; color:var(--gold-dim); }
+.oracle-card::after  { content:'✦'; position:absolute; bottom:1rem; right:1.5rem; font-size:1.1rem; color:var(--gold-dim); }
+
+.oracle-prompt {
+  font-family: 'Cinzel', serif;
+  font-size: .92rem;
+  color: var(--silver);
+  letter-spacing: .1em;
+  line-height: 1.7;
+  margin-bottom: 2rem;
+}
+
+.input-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.date-input {
+  background: rgba(255,255,255,.04);
+  border: 1px solid rgba(201,162,39,.35);
+  color: var(--star);
+  font-family: 'Crimson Text', serif;
+  font-size: 1.1rem;
+  padding: .9rem 1.5rem;
+  width: 100%;
+  max-width: 320px;
+  outline: none;
+  text-align: center;
+  border-radius: 2px;
+  transition: border-color .3s, box-shadow .3s;
+}
+.date-input:focus {
+  border-color: var(--gold);
+  box-shadow: 0 0 20px rgba(201,162,39,.15);
+}
+input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(.6) sepia(1) saturate(3);
+  cursor: pointer;
+}
+
+.btn-revelar {
+  font-family: 'Cinzel', serif;
+  font-size: .88rem;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  padding: .85rem 2.2rem;
+  border: 1px solid var(--gold);
+  background: linear-gradient(135deg, rgba(201,162,39,.18), rgba(201,162,39,.06));
+  color: var(--gold-light);
+  cursor: pointer;
+  transition: all .25s;
+  border-radius: 2px;
+}
+.btn-revelar:hover {
+  background: linear-gradient(135deg, rgba(201,162,39,.38), rgba(201,162,39,.16));
+  box-shadow: 0 0 30px rgba(201,162,39,.25);
+  transform: translateY(-1px);
+}
+
+/* ── Result Panel ── */
+.result-panel {
+  display: none;
+  margin-top: 2.5rem;
+  animation: fadeUp .6s forwards;
+}
+.result-panel.show { display: block; }
+
+/* Knight Illustration Container */
+.knight-illustration {
+  position: relative;
+  width: 200px;
+  height: 220px;
+  margin: 0 auto 1.5rem;
+  filter: drop-shadow(0 0 30px var(--gold-glow));
+  animation: float 4s ease-in-out infinite;
+}
+@keyframes float {
+  0%,100% { transform: translateY(0px); }
+  50%      { transform: translateY(-12px); }
+}
+
+.knight-glow-ring {
+  position: absolute;
+  inset: -20px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(201,162,39,.2) 0%, transparent 70%);
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+@keyframes pulseGlow {
+  0%,100% { opacity:.6; transform: scale(1); }
+  50%      { opacity:1; transform: scale(1.1); }
+}
+
+.knight-svg {
+  width: 100%;
+  height: 100%;
+}
+
+.result-sign-symbol {
+  font-size: 3.5rem;
+  line-height: 1;
+  margin-bottom: .5rem;
+  filter: drop-shadow(0 0 20px var(--gold));
+  animation: pulseStar 3s ease-in-out infinite;
+}
+@keyframes pulseStar {
+  0%,100% { filter: drop-shadow(0 0 15px var(--gold)); }
+  50%      { filter: drop-shadow(0 0 35px var(--gold-light)); }
+}
+
+.result-sign-name {
+  font-family: 'Cinzel Decorative', cursive;
+  font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+  color: var(--gold-light);
+  margin-bottom: .3rem;
+}
+
+.result-knight-name {
+  font-family: 'Cinzel', serif;
+  font-size: 1rem;
+  letter-spacing: .22em;
+  color: var(--gold-dim);
+  margin-bottom: 1.5rem;
+  text-transform: uppercase;
+}
+
+.result-divider {
+  width: 80px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  margin: 0 auto 1.5rem;
+}
+
+.result-power {
+  font-size: 1.1rem;
+  color: var(--silver);
+  line-height: 1.9;
+  font-style: italic;
+  border-left: 2px solid var(--gold-dim);
+  padding-left: 1.2rem;
+  text-align: left;
+  margin-bottom: 1.5rem;
+}
+
+.result-element {
+  display: inline-block;
+  font-family: 'Cinzel', serif;
+  font-size: .78rem;
+  letter-spacing: .2em;
+  color: var(--gold);
+  border: 1px solid rgba(201,162,39,.3);
+  padding: .35rem 1rem;
+  border-radius: 2px;
+  background: rgba(201,162,39,.06);
+  margin: .25rem;
+}
+
+/* ── Footer ── */
+footer {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  padding: 2rem;
+  border-top: 1px solid rgba(201,162,39,.1);
+  font-family: 'Cinzel', serif;
+  font-size: .75rem;
+  letter-spacing: .2em;
+  color: var(--gold-dim);
+}
+
+@media (max-width: 600px) {
+  .oracle-card { padding: 2rem 1.2rem; }
+}
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<header class="hero">
+  <div class="hero-bg-glow"></div>
+  <svg class="zodiac-ring" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="250" cy="250" r="240" stroke="#c9a227" stroke-width="1"/>
+    <circle cx="250" cy="250" r="200" stroke="#c9a227" stroke-width="0.5"/>
+    <circle cx="250" cy="250" r="160" stroke="#c9a227" stroke-width="1"/>
+    <line x1="250" y1="10" x2="250" y2="490" stroke="#c9a227" stroke-width="0.5"/>
+    <line x1="10" y1="250" x2="490" y2="250" stroke="#c9a227" stroke-width="0.5"/>
+    <line x1="83" y1="83" x2="417" y2="417" stroke="#c9a227" stroke-width="0.5"/>
+    <line x1="417" y1="83" x2="83" y2="417" stroke="#c9a227" stroke-width="0.5"/>
+    <line x1="32" y1="155" x2="468" y2="345" stroke="#c9a227" stroke-width="0.3"/>
+    <line x1="32" y1="345" x2="468" y2="155" stroke="#c9a227" stroke-width="0.3"/>
+    <line x1="155" y1="32" x2="345" y2="468" stroke="#c9a227" stroke-width="0.3"/>
+    <line x1="345" y1="32" x2="155" y2="468" stroke="#c9a227" stroke-width="0.3"/>
+    <text x="245" y="28"  fill="#c9a227" font-size="14" text-anchor="middle">♈</text>
+    <text x="368" y="65"  fill="#c9a227" font-size="14" text-anchor="middle">♉</text>
+    <text x="455" y="175" fill="#c9a227" font-size="14" text-anchor="middle">♊</text>
+    <text x="468" y="258" fill="#c9a227" font-size="14" text-anchor="middle">♋</text>
+    <text x="455" y="345" fill="#c9a227" font-size="14" text-anchor="middle">♌</text>
+    <text x="368" y="444" fill="#c9a227" font-size="14" text-anchor="middle">♍</text>
+    <text x="245" y="480" fill="#c9a227" font-size="14" text-anchor="middle">♎</text>
+    <text x="122" y="444" fill="#c9a227" font-size="14" text-anchor="middle">♏</text>
+    <text x="35"  y="345" fill="#c9a227" font-size="14" text-anchor="middle">♐</text>
+    <text x="22"  y="258" fill="#c9a227" font-size="14" text-anchor="middle">♑</text>
+    <text x="35"  y="175" fill="#c9a227" font-size="14" text-anchor="middle">♒</text>
+    <text x="122" y="65"  fill="#c9a227" font-size="14" text-anchor="middle">♓</text>
+  </svg>
+
+  <p class="hero-eyebrow">Desafio Final · A Armadura de Ouro</p>
+  <h1 class="hero-title">Oráculo Solar</h1>
+  <p class="hero-sub">Saga do Santuário · Cavaleiros de Ouro</p>
+  <div class="hero-divider"></div>
+  <p class="hero-desc">
+    Você provou seu valor pelas 12 Casas. Agora descubra qual Cavaleiro de Ouro rege o seu destino — inscrito nas estrelas desde o dia em que nasceu.
+  </p>
+</header>
+
+<!-- Oracle -->
+<section class="oracle-section">
+  <p class="section-label">Consulte as estrelas</p>
+  <h2 class="section-title">Revele seu Cavaleiro</h2>
+  <div class="section-divider"></div>
+
+  <div class="oracle-card">
+    <p class="oracle-prompt">
+      Cada alma nasce sob a proteção de um Cavaleiro de Ouro.<br>
+      Informe sua data de nascimento e o Cosmos revelará o seu.
+    </p>
+
+    <div class="input-wrap">
+      <input class="date-input" type="date" id="data-nasc" aria-label="Data de Nascimento">
+      <button class="btn-revelar" onclick="revelarOraculo()">✦ Revelar Oráculo ✦</button>
+    </div>
+
+    <!-- Result -->
+    <div class="result-panel" id="result-panel">
+      <div class="result-divider" style="margin-top:2rem;"></div>
+
+      <div class="knight-illustration" id="knight-illustration">
+        <div class="knight-glow-ring"></div>
+        <!-- SVG do cavaleiro é injetado aqui via JS -->
+      </div>
+
+      <div class="result-sign-symbol" id="result-symbol">♈</div>
+      <div class="result-sign-name" id="result-sign">—</div>
+      <div class="result-knight-name" id="result-knight">Cavaleiro de Ouro de —</div>
+      <div class="result-divider"></div>
+      <p class="result-power" id="result-power">—</p>
+      <div id="result-tags"></div>
+    </div>
+  </div>
+</section>
+
+<footer>✦ Oráculo Solar · A Armadura de Ouro · Cavaleiros do Zodíaco ✦</footer>
+
+<script>
+// ── 🖼️ COLE AQUI OS LINKS DAS FOTOS DOS CAVALEIROS ────────────────────────
+// Substitua cada '' pelo link direto da imagem desejada.
+// Exemplo: 'https://i.imgur.com/abc123.png'
+const KNIGHT_IMGS = {
+  'Áries':       'https://ovicio.com.br/wp-content/uploads/2023/01/20230118-mu_de_3fries.webp',
+  'Touro':       'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEgiq8bTBmU8GkotjdM4WSZU0UB5341uJsYCsvne188_WgavEPOd4JUMAB-WrJmeHQn4SYiJXMkSwlEgpSf_6EFgg6pCKEOVIwJHV7kE-HMWrRslZrsbOZfj0roXdyCzsP0A69Zka7XkttpZ/s1600/Aldebaran+de+Touro.png',
+  'Gêmeos':      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEip_goXvdXMfcKAYLduKfqq8BeYA3DSQYWPDQnLYAfQmjz1alrPcg_2n1dW1jI7MsakBFOk3oPnA3JBO-yP7VaFdpDLalD4hwGx_e0BxTaniBzb-5jTFvfCJ68NTjgU4ejurLcocxKmaVyk/s1600/Saga_de_gemeos.jpg',
+  'Câncer':      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEghFFN5ne8tiUgKvA_C8x4Uz6Lk8tJZ_9Gyor4UHQelXSt8cYe8ZvebtuZ8h4ooWtSvtNKxLgRATlqUnP17PMW3zMTPty6zytwV6bwgprzrRNw6ZirjlUf2J9hAy1m3zaE4mXR_GJGU_81R/s1600/M%C3%A1scara+da+Mote+de+C%C3%A2ncer.png',
+  'Leão':        'https://dropsdejogos.uai.com.br/wp-content/uploads/sites/10/2023/04/divulgacao-aiolia-reproducao-scaled.jpg',
+  'Virgem':      'https://blogger.googleusercontent.com/img/b/R29vZ2xl/AVvXsEjtBOuUSRWHuFm3dwr82KXudE6c8TT8BlxTpVDBL_n6e_pMMYkNod4a-CvdM2nynPCQLfOpZpTqAUzsQwehyvT32xw41nE8z9R6OSnqYxRnqTbJnnCI9S8Zx2Ae1dn18RRlF_EgGnaYj5qe/s1600/Shaka+de+Virgem+(2).jpg',
+  'Libra':       'https://fenixdourado.wordpress.com/wp-content/uploads/2011/10/dohko.png',
+  'Escorpião':   'https://ovicio.com.br/wp-content/uploads/2023/01/20230121-scorpio_cloth.webp',
+  'Sagitário':   'https://i.pinimg.com/736x/55/61/ed/5561edd1e6d9b36a9a930b1fa4b68a4f.jpg',
+  'Capricórnio': 'https://fenixdourado.files.wordpress.com/2011/10/shura.png',
+  'Aquário':     'https://i.pinimg.com/736x/11/da/72/11da726c98452a3376a6b6301e3ac84b.jpg',
+  'Peixes':      'https://ovicio.com.br/wp-content/uploads/2023/05/20230509-afrodite_ressurge_para_enfrentar_loki-555x555.webp',
+};
+// ────────────────────────────────────────────────────────────────────────────
+
+// ── Dados dos signos ──────────────────────────────────────
+const SIGNOS = [
+  {
+    signo:'Áries', symbol:'♈', cavaleiro:'Músculos de Áries',
+    datas:[[3,21],[4,19]],
+    poder:'Sua armadura dourada canaliza a chama primordial. Você lidera com coragem irracional — e essa é sua maior força.',
+    elemento:'Fogo', ataque:'Grande Explosão de Chamas', wrap: false
+  },
+  {
+    signo:'Touro', symbol:'♉', cavaleiro:'Aldebaran de Touro',
+    datas:[[4,20],[5,20]],
+    poder:'Imóvel como a montanha, seu Grande Chifre pode rachar o próprio espaço. A persistência é o seu cosmos.',
+    elemento:'Terra', ataque:'Grande Chifre', wrap: false
+  },
+  {
+    signo:'Gêmeos', symbol:'♊', cavaleiro:'Saga de Gêmeos',
+    datas:[[5,21],[6,20]],
+    poder:'Duas almas em um corpo: gênio e sombra. Seu intelecto brilha como nenhum outro, mas cuidado com o abismo interior.',
+    elemento:'Ar', ataque:'Explosão Galáctica', wrap: false
+  },
+  {
+    signo:'Câncer', symbol:'♋', cavaleiro:'Death Mask de Câncer',
+    datas:[[6,21],[7,22]],
+    poder:'Guardião do limiar entre vida e morte. Sua sensibilidade oculta uma força capaz de transcender o mundo físico.',
+    elemento:'Água', ataque:'Máscara Atlantis', wrap: false
+  },
+  {
+    signo:'Leão', symbol:'♌', cavaleiro:'Aiolia de Leão',
+    datas:[[7,23],[8,22]],
+    poder:'Raio de Plasma: a manifestação pura de um coração nobre. Você protege os frágeis com bravura inabalável.',
+    elemento:'Fogo', ataque:'Raio de Plasma', wrap: false
+  },
+  {
+    signo:'Virgem', symbol:'♍', cavaleiro:'Shaka de Virgem',
+    datas:[[8,23],[9,22]],
+    poder:'O mais próximo de Deus. Seus seis sentidos transcendem o ordinário; sua meditação revela as verdades ocultas.',
+    elemento:'Terra', ataque:'Templo de Ouro de Virgem', wrap: false
+  },
+  {
+    signo:'Libra', symbol:'♎', cavaleiro:'Dohko de Libra',
+    datas:[[9,23],[10,22]],
+    poder:'Portador das Doze Armas Sagradas. Em você, sabedoria e ação se equilibram em harmonia perfeita.',
+    elemento:'Ar', ataque:'Escamas de Libra', wrap: false
+  },
+  {
+    signo:'Escorpião', symbol:'♏', cavaleiro:'Milo de Escorpião',
+    datas:[[10,23],[11,21]],
+    poder:'Antares Crimson — 15 pontos que paralisam o cosmos. Sua intensidade transforma tudo ao redor.',
+    elemento:'Água', ataque:'Antares Carmesim', wrap: false
+  },
+  {
+    signo:'Sagitário', symbol:'♐', cavaleiro:'Aioros de Sagitário',
+    datas:[[11,22],[12,21]],
+    poder:'A Flecha Dourada que parte em busca da verdade. Sua liberdade e honra são a essência do cosmos.',
+    elemento:'Fogo', ataque:'Flecha Dourada', wrap: false
+  },
+  {
+    signo:'Capricórnio', symbol:'♑', cavaleiro:'Shura de Capricórnio',
+    datas:[[12,22],[1,19]],
+    poder:'Excalibur foi gravada em sua mão direita por Athena. Disciplina e sacrifício são seus sagrados princípios.',
+    elemento:'Terra', ataque:'Excalibur', wrap: true   // atravessa o ano
+  },
+  {
+    signo:'Aquário', symbol:'♒', cavaleiro:'Camus de Aquário',
+    datas:[[1,20],[2,18]],
+    poder:'Aurora Execution congela a própria alma. Sua clareza fria esconde um coração que arde pela humanidade.',
+    elemento:'Ar', ataque:'Execução Aurora', wrap: false
+  },
+  {
+    signo:'Peixes', symbol:'♓', cavaleiro:'Afrodite de Peixes',
+    datas:[[2,19],[3,20]],
+    poder:'Rosas Mortais de beleza insuportável. Sua sensibilidade artística oculta um cosmo devastadoramente poderoso.',
+    elemento:'Água', ataque:'Rosas Mortais', wrap: false
+  },
+];
+
+// ── Lógica de signo ──────────────────────────────────────
+function getSigno(mes, dia) {
+  for (const s of SIGNOS) {
+    const [[m1, d1], [m2, d2]] = s.datas;
+    if (s.wrap) {
+      // Capricórnio: dez 22 → jan 19
+      if ((mes === m1 && dia >= d1) || (mes === m2 && dia <= d2)) return s;
+    } else {
+      if (m1 === m2) {
+        if (mes === m1 && dia >= d1 && dia <= d2) return s;
+      } else {
+        if ((mes === m1 && dia >= d1) || (mes > m1 && mes < m2) || (mes === m2 && dia <= d2)) return s;
+      }
+    }
+  }
+  return SIGNOS[0];
+}
+
+// ── Revelar Oráculo ──────────────────────────────────────
+function revelarOraculo() {
+  const val = document.getElementById('data-nasc').value;
+  if (!val) { alert('Informe sua data de nascimento, Cavaleiro!'); return; }
+
+  const [, mesStr, diaStr] = val.split('-');
+  const mes = parseInt(mesStr, 10);
+  const dia = parseInt(diaStr, 10);
+
+  const s = getSigno(mes, dia);
+
+  // Injeta imagem ou SVG fallback do cavaleiro
+  const illus = document.getElementById('knight-illustration');
+  const imgUrl = KNIGHT_IMGS[s.signo];
+  if (imgUrl) {
+    illus.innerHTML = `<div class="knight-glow-ring"></div>
+      <img src="${imgUrl}" alt="${s.cavaleiro}"
+           style="width:100%;height:100%;object-fit:contain;border-radius:4px;"
+           onerror="this.style.display='none'">`;
+  } else {
+    illus.innerHTML = `<div class="knight-glow-ring"></div>${KNIGHT_SVGS[s.signo] || KNIGHT_SVGS['Áries']}`;
+  }
+
+  document.getElementById('result-symbol').textContent  = s.symbol;
+  document.getElementById('result-sign').textContent    = s.signo;
+  document.getElementById('result-knight').textContent  = `Cavaleiro de Ouro de ${s.signo}`;
+  document.getElementById('result-power').textContent   = s.poder;
+
+  document.getElementById('result-tags').innerHTML =
+    `<span class="result-element">Cavaleiro: ${s.cavaleiro}</span>
+     <span class="result-element">Elemento: ${s.elemento}</span>
+     <span class="result-element">Ataque: ${s.ataque}</span>`;
+
+  const panel = document.getElementById('result-panel');
+  panel.classList.remove('show');
+  void panel.offsetWidth;
+  panel.classList.add('show');
+  panel.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
+
+// Enter key
+document.getElementById('data-nasc').addEventListener('keydown', e => {
+  if (e.key === 'Enter') revelarOraculo();
+});
+</script>
+</body>
+</html>
